@@ -3,6 +3,7 @@
 import './style.css';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import debounce from 'lodash.debounce';
 import SearchBar from './components/search_bar';
 import youtubeSearch from './youtube-api';
 import VideoList from './components/video_list';
@@ -16,24 +17,30 @@ class App extends Component {
       videos: [],
       selectedVideo: null,
     };
+    this.search('pixar');
+    this.search = debounce(this.search, 300);
+  }
 
-    youtubeSearch('pixar').then((videos) => {
-      this.setState({
-        videos,
-        selectedVideo: videos[0],
+    search = (text) => {
+      youtubeSearch(text).then((videos) => {
+        this.setState({
+          videos,
+          selectedVideo: videos[0],
+        });
       });
-    });
-  }
+    }
 
-  render() {
-    return (
-      <div>
-        <SearchBar />
-        <VideoDetail video={this.state.selectedVideo} />
-        <VideoList onVideoSelect={(selectedVideo) => this.setState({ selectedVideo })} videos={this.state.videos} />
-      </div>
-    );
-  }
+    render() {
+      return (
+        <div>
+          <SearchBar onSearchChange={this.search} />
+          <div id="video-section">
+            <VideoDetail video={this.state.selectedVideo} />
+            <VideoList onVideoSelect={(selectedVideo) => this.setState({ selectedVideo })} videos={this.state.videos} />
+          </div>
+        </div>
+      );
+    }
 }
 
 ReactDOM.render(<App />, document.getElementById('main'));
