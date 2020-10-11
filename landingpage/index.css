@@ -10,11 +10,6 @@ nav{
     font-size: 25px;
     line-height: 22px;
 }
-li {
-
-    display:list-item;
-    text-align: -webkit-match-parent;
-}
 
 /*
 *  Specific li for nav,
@@ -24,11 +19,13 @@ nav li {
     list-style-type: none;
     display:flex;
     align-items: center;
+    text-decoration: none;
 
 }
 
-nav ul li{
+nav ul{
     list-style-type: none;
+    display:flex;
     margin: 0;
 }
 .emoji{
